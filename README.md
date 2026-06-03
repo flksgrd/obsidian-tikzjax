@@ -24,6 +24,24 @@ The following packages are available in `\usepackage{}`:
 - amssymb
 - tikz-3dplot
 
+## Installation
+
+This fork is not in Obsidian's Community Plugins list, so install it from this repo's [releases](https://github.com/flksgrd/obsidian-tikzjax/releases).
+
+### Via BRAT (recommended — auto-updates)
+1. Install **BRAT**: Settings → Community plugins → Browse → search "BRAT" → Install & Enable.
+2. Open the command palette and run **BRAT: Add a beta plugin for testing**.
+3. Enter `flksgrd/obsidian-tikzjax` and confirm — BRAT installs the latest release and keeps it up to date.
+4. Enable **TikZJax** under Settings → Community plugins.
+
+### Manual
+1. Download `main.js`, `manifest.json` and `styles.css` from the [latest release](https://github.com/flksgrd/obsidian-tikzjax/releases/latest).
+2. Place them in `<vault>/.obsidian/plugins/obsidian-tikzjax/`.
+3. Reload Obsidian and enable **TikZJax** under Settings → Community plugins.
+
+> [!TIP]
+> The bundled `main.js` is ~11 MB (it inlines the full TeX/WASM engine), so the **first** diagram after enabling renders slowly; the rest are fast.
+
 ## Usage
 Content inside of `tikz` code blocks will be rendered by TikZJax.
 
