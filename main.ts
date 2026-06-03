@@ -42,7 +42,7 @@ export default class TikzjaxPlugin extends Plugin {
 
 
 	loadTikZJax(doc: Document) {
-		const s = document.createElement("script");
+		const s = doc.createElement("script");
 		s.id = "tikzjax";
 		s.type = "text/javascript";
 		s.innerText = tikzjaxJs;
@@ -94,6 +94,14 @@ export default class TikzjaxPlugin extends Plugin {
 
 	registerTikzCodeBlock() {
 		this.registerMarkdownCodeBlockProcessor("tikz", (source, el, ctx) => {
+			// Ensure TikZJax is loaded in the document this element belongs to.
+			// When exporting/printing to PDF, Obsidian renders into a fresh
+			// document that hasn't had TikZJax injected yet (see #45).
+			const doc = el.ownerDocument;
+			if (doc && !doc.getElementById("tikzjax")) {
+				this.loadTikZJax(doc);
+			}
+
 			const script = el.createEl("script");
 
 			script.setAttribute("type", "text/tikz");
@@ -136,11 +144,19 @@ export default class TikzjaxPlugin extends Plugin {
 
 	colorSVGinDarkMode(svg: string) {
 		// Replace the color "black" with currentColor (the current text color)
-		// so that diagram axes, etc are visible in dark mode
-		// And replace "white" with the background color
+		// so that diagram axes, etc are visible in dark mode,
+		// and replace "white" with the background color.
+		// Cover the common SVG encodings: 3- and 6-digit hex, the named colors,
+		// and rgb() form. The (?![0-9a-f]) guard stops "#000" from matching
+		// inside a longer color such as "#0000ff".
 
-		svg = svg.replaceAll(/("#000"|"black")/g, `"currentColor"`)
-				.replaceAll(/("#fff"|"white")/g, `"var(--background-primary)"`);
+		svg = svg
+			.replace(/(#000000|#000)(?![0-9a-f])/gi, "currentColor")
+			.replace(/(#ffffff|#fff)(?![0-9a-f])/gi, "var(--background-primary)")
+			.replaceAll('"black"', '"currentColor"')
+			.replaceAll('"white"', '"var(--background-primary)"')
+			.replace(/rgb\(0,\s*0,\s*0\)/gi, "currentColor")
+			.replace(/rgb\(255,\s*255,\s*255\)/gi, "var(--background-primary)");
 
 		return svg;
 	}
