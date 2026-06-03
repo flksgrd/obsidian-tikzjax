@@ -4,6 +4,12 @@
 
 A plugin for Obsidian that lets you render LaTeX and TikZ diagrams in your notes.
 
+> [!NOTE]
+> **This is a fork** with updated bundled packages, diverging from the [original by @artisticat1](https://github.com/artisticat1/obsidian-tikzjax):
+> - **CircuiTikZ `0.9.x` → `1.8.6`** — rebuilt on a TeX Live 2023 core (pgf/TikZ 3.1.10, with updated pgfplots and TikZ libraries). Adds ~74 components, including IC/DIP/QFP chips, multiplexers, flip-flops and seven-segment displays.
+> - **PDF export** now renders TikZ correctly (diagrams are injected into export/print documents).
+> - **Dark mode** colour-mapping now covers more SVG encodings (6-digit hex and `rgb()`).
+
 You can render graphs, figures, circuits, chemical diagrams, commutative diagrams, and more.
 
 The following packages are available in `\usepackage{}`:
